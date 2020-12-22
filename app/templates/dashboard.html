@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dashboard</title>
+
+</head>
+
+<body class="container" style="padding: 20px;">
+
+    <div class="d-flex text-white">
+        <div class="p-2 w-100 bg">
+            <div class="alert alert-success" role="alert">
+                <h1 class="alert-heading">hello {{loggedInUser.f_name}}!</h1>
+            </div>
+        </div>
+        <div class="p-2 flex-shrink-0 bg">
+            <a href="/logout" class="btn btn-danger" style="width: 100px;">Log Out</a>
+        </div>
+        <div class="p-2 flex-shrink-0 bg">
+            <a href="/wishes/stats" class="btn btn-primary">View stats</a>
+        </div>
+        <div class="p-2 flex-shrink-0 bg">
+            <a href="/wishes/new" class="btn btn-outline-primary">Make a wish</a>
+        </div>
+
+    </div>
+    <h3>your wish list:</h3>
+    <table class="table table-hover table-bordered">
+        <tr>
+            <th>item</th>
+            <th>date added</th>
+            <th>Actions</th>
+        </tr>
+        {% for s in wishes %}
+        <tr>
+            <td>
+                {{s.item}}
+            </td>
+            <td>
+                {{s.created_at|date:'b d, Y'}}
+            </td>
+            <td>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <a class="btn btn-outline-danger" href="remove/{{s.id}}" role="button">Remove</a>
+                    <a class="btn btn-outline-warning" href="/edit_form/edit/{{s.id}}" role="button">Edit</a>
+                    <a class="btn btn-outline-success" href="/grant_wish/{{s.id}}" role="button">Granted!</a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Granted wishes:</h3>
+    <table class="table table-hover table-bordered">
+        <tr>
+            <th>item</th>
+            <th>Wisher</th>
+            <th>date added</th>
+            <th>date Granted</th>
+            <th>Likes</th>
+            <th>Actions</th>
+        </tr>
+        {% for s in granted %}
+        <tr>
+            <td>
+                {{s.item}}
+            </td>
+            <td>
+                {{s.wisher.f_name}} {{s.wisher.l_name}}
+            </td>
+            <td>
+                {{s.created_at|date:'b d, Y'}}
+            </td>
+            <td>
+                {{s.date_granted|date:'b d, Y'}}
+            </td>
+            <td>
+                {{s.likes.all.count}}
+            </td>
+            <td>
+                <a href="/like_wish/{{s.id}}" class="btn btn-outline-primary">Like!</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+</body>
+
+</html>
